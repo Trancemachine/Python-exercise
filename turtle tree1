@@ -1,0 +1,38 @@
+import turtle as t
+import math as m
+import random as r
+
+t.bgcolor(0.5, 0.5, 0.5)        # 设置背景颜色
+t.hideturtle()      # 隐藏箭头
+t.speed(0)
+t.tracer(0, 0)      # 图画完后一次性显示
+t.left(90)      # 向左转90度使其第一步向上移动
+t.penup()       # 起笔，随后轨迹不留痕迹
+t.backward(300)       # 设置起点位置
+
+def tree(n, branchLen):     # 画树
+    t.pendown()     # 落笔，接下来移动会留痕迹
+    branch_color = m.cos(m.radians(t.heading() + 45)) / 8 + 0.25      # 获得树枝颜色参数
+    t.pencolor(branch_color, branch_color, branch_color)     # 树枝颜色
+    t.pensize(n / 4)        # 树枝粗度
+    t.forward(branchLen)        # 向前走branchLen步
+    if n > 0:
+        rtang = r.random() * 15 + 10        # 向右转的角度
+        ltang = r.random() * 15 + 10        # 向左转的角度
+        dist = branchLen * (r.random() * 0.35 + 0.6)
+        t.right(rtang)      # 向右转rtang角度
+        tree(n-1, dist)        # 迭代
+        t.left(rtang + ltang)       # 想左转角
+        tree(n-1, dist)        # 迭代
+        t.right(ltang)      # 回到原始方向
+    else:       # 画树叶
+        t.right(90)
+        tree_color = m.cos(m.radians(t.heading() - 45)) / 4 + 0.5       # 树叶颜色参数
+        t.pencolor(tree_color, tree_color, tree_color)      # 树叶颜色
+        t.circle(2)     # 以小圆圈代替树叶
+        t.left(90)
+    t.penup()       #起笔，接下来移动不留痕迹
+    t.backward(branchLen)       # 回到起点
+
+tree(13, 100)       # 绘树
+t.done()
